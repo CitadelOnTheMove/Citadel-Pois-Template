@@ -6,7 +6,7 @@ CITADEL on the move - Mobile application template for Pois Of Interest - www.cit
 Deployment in 6 STEPS
 
 1.  Put all the files under a folder named 'citadel-parkings-template' inside the web directory of your local webserver.
-2.  Open the Config.php file and fill in your root web directory. 
+2.  Open the Config.php file and fill in your root web directory,e.g. (in a WAMP default installation): 
 
         define(“HTDOCS_ROOT”, “C:/wamp/www/”)
 3.  Open a browser and point it at: http://localhost/citadel-parkings-template/index.php
