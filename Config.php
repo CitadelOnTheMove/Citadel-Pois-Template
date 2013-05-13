@@ -10,7 +10,7 @@
  * for example: "C:/wamp/www/" is the default root web dir in a standard wampServer setup)
  ***********************************************************
  */
-define("HTDOCS_ROOT", "");  
+define("HTDOCS_ROOT", "C:/wamp/www/");  
 
 /*********************************************************** 
  * Replace 'localhost' with your IP address, 

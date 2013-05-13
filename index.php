@@ -146,60 +146,7 @@
             </article> 
         </div> 
             
-        <!-- New poi Page: Provides form elements to add a new poi or remove the marker -->  
-        <div data-role="dialog" id="newPoiDialog">
-            <header data-role="header">
-                <span class="ui-title">Add a new POI</span>	
-            </header>
-            
-            <div data-role="content">
-                <div data-role="fieldcontain">
-                    <label for="poiId">POI Identifier:</label>
-                    <input type="text" name="poiId" id="poiId" value=""  />
-                </div>
-                <div data-role="fieldcontain">
-                    <label for="poiTitle">POI Title:</label>
-                    <input type="text" name="poiTitle" id="poiTitle" value=""  />
-                </div>	
-                <div data-role="fieldcontain">
-                    <label for="poiDesc">POI Description:</label>
-                    <textarea name="poiDesc" id="poiDesc"></textarea>
-                </div>	
-                <div data-role="fieldcontain">
-                    <label for="poiCategory">POI Category:</label>
-                    <select name="poiCategory" id="poiCategory">
-                        <!-- dynamically filled with data -->
-                    </select>
-                </div>	
-                <div data-role="fieldcontain">
-                    <label for="poiAddress">POI Address:</label>
-                    <input type="text" name="poiAddress" id="poiAddress" value=""  />
-                </div>	
-                <div data-role="fieldcontain">
-                    <label for="poiPostal">POI Postal:</label>
-                    <input type="text" name="poiPostal" id="poiPostal" value=""  />
-                </div>	
-                <div data-role="fieldcontain">
-                    <label for="poiCity">POI City:</label>
-                    <input type="text" name="poiCity" id="poiCity" value=""  />
-                </div>	
-                <div data-role="fieldcontain">
-                    <label for="poiPhone">POI Phone:</label>
-                    <input type="tel" name="poiPhone" id="poiPhone" value=""  />
-                </div>	
-                <div data-role="fieldcontain">
-                    <label for="poiUrl">POI URL:</label>
-                    <input type="url" name="poiUrl" id="poiUrl" value=""  />
-                </div>	
-            </div>
-                    
-            <footer data-role="footer" data-posistion="fixed" data-fullscreen="true" class="newPoiDialogFooter">
-                <a href="" id="addNewPoiSave" data-icon="check" data-theme="a" title="Save" class="ui-btn-right">Save</a>
-                    <a href="" id="addNewPoiDelete" data-icon="delete" data-theme="a" title="Delete" class="ui-btn-left">Delete</a>
-            </footer>
-                
-        </div> 
-
+      
         <script type="text/javascript">
                     /****************** Global js vars ************************/
                     

@@ -108,7 +108,7 @@ function addMarkers()
              */
             var coords = poi.location.point.pos.posList.split(" ");
             var current_markerpos = new google.maps.LatLng(coords[0], coords[1]);
-            var marker_image = getFavouriteValue(poi.id)?"images/star.png":getMarkerImage();
+            var marker_image = getFavouriteValue(poi.id) ? "images/star.png" : getMarkerImage(poi.category[0]);
             var current_marker = new google.maps.Marker({
                 position: current_markerpos,
                 map: map,
@@ -128,22 +128,38 @@ function addMarkers()
 }
 
 /*
- * Returns the marker image picking a random color
+ * Returns the marker image picking a unique color for every category
  */
-var markerRotate = 1;
-function getMarkerImage() {
-    var marker_image = 'images/pin' + markerRotate + '.png';
-    markerRotate = markerRotate >= 3 ? 1 : markerRotate + 1;
 
-    return marker_image;
+function getMarkerImage(category) {
+    var coloredMarkers = new Array();
+
+    for (var j = 0; j < 10; j++) {
+        coloredMarkers[j] = 'images/pin' + j + '.png';
+    }
+
+    for (i = 0; i < filters.length; i++) {
+        if (filters[i].name == category) {
+            return coloredMarkers[i % 10];
+        }
+    }
 }
-function getMarkerClass() {
-    var marker_class = 'pin' + markerRotate;
-    markerRotate = markerRotate >= 3 ? 1 : markerRotate + 1;
 
-    return marker_class;
+
+function getMarkerClass(category) {
+
+    var coloredClassMarkers = new Array();
+
+    for (var j = 0; j < 10; j++) {
+        coloredClassMarkers[j] = 'pin' + j;
+    }
+
+    for (i = 0; i < filters.length; i++) {
+        if (filters[i].name == category) {
+            return coloredClassMarkers[i % 10];
+        }
+    }
 }
-
 
 /* Sets the content of the infoBubble for the given 
  * poi
@@ -254,8 +270,8 @@ function setListPagePois()
                     "</p>";
             }
             var isFavourite = getFavouriteValue(poi.id);
-            var imageClass = (isFavourite?"star":getMarkerClass());
-            var className = (isFavourite?" class='favourite'":" class='nonfavourite'");
+            var imageClass = (isFavourite ? "star" : getMarkerClass(poi.category[0]));
+            var className = (isFavourite ? " class='favourite'" : " class='nonfavourite'");
 
             contentTemplate +=
                 "<li" + className + ">" +
@@ -407,8 +423,8 @@ $(document).ready(function() {
 
     /* Click handler for the 'near me' button */
     $('.pois-nearme').click(function() {
-        lastLoaded = 'mearme';
-        $.mobile.changePage("#page1", { transition: "none"});
+        lastLoaded = 'nearme';
+        $.mobile.changePage("#page1", {transition: "none"});
         $('.navbar > ul > li > a').removeClass('ui-btn-active');
         $('.pois-nearme').addClass('ui-btn-active');
 
@@ -570,7 +586,7 @@ function setFilters() {
         var checked = filter.selected?' checked':'';
         
         filters_html += "<input type='checkbox'" + checked + " name='map-filter' id='map-filter" + i + "' class='map-filter' value=\"" + filter.name + "\" />" +
-            "<label for='map-filter" + i + "'>" + filter.name + "</label>";
+                "<label for='map-filter" + i + "'><img id='img_style' src='images/pin" + i + ".png'/> " + filter.name + "</label>";
     }
     $('#map-filter > div > fieldset').html(filters_html);
     $('#map-filter > div > fieldset > input').checkboxradio({ mini: true});
@@ -619,16 +635,19 @@ function hideAddressBar() {
  */
 function isFilterSelected(categories) {
     var found = false;
-    $.each(categories, function(k, v){
-        var filter = $.grep(filters, function (e){ return (e.name == v && e.selected) });
-        
+    $.each(categories, function(k, v) {
+        var filter = $.grep(filters, function(e) {
+            return (e.name == v && e.selected)
+        });
+
         if (filter.length == 1) {
             found = true;
             return false;
         }
     });
 
-    if (found) return true;
+    if (found)
+        return true;
 
     return false;
 }
