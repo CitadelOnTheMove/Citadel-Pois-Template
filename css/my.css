@@ -359,6 +359,15 @@ header.ui-header, footer.ui-footer {
 .newPoiDialogFooter {
     height:42px;
 }
+/* List pagination markup */
+.list-pagination-container {
+  text-align: center;
+}
+.list-pagination-container > .ui-icon {
+  display: inline-block;
+  margin: 0px 11px 20px 11px;
+}
+
 
 /*Overload jquery ui css*/
 .ui-bar-a {

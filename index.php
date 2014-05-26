@@ -100,6 +100,11 @@
                         <!-- dynamically filled with data -->
                         </ul>
                     </div><!--list-->
+                    <div class="list-pagination-container">
+                        <a id="list-pagination-previous" class="ui-icon ui-icon-arrow-l ui-icon-shadow">&nbsp;</a>
+                        <span id="list-pagination-text"><!-- dynamically filled with data --></span>
+                        <a id="list-pagination-next" class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</a>
+                    </div>
                 </div><!--list-scroll-container-->
             </div><!--list-container-->
         </div><!-- /page -->

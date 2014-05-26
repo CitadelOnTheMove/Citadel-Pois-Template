@@ -1,6 +1,7 @@
 /*****************Global variables********************/
 var newMarker = null;
 var point = null;
+var paginationNum = 10;
 
 /****************** Functions *****************************/
 
@@ -16,7 +17,7 @@ function globalInit() {
             initializeMap(mapLat, mapLon);
         }, 500);
         loadListPageData();
-        refreshListPageView();
+        refreshListPageView(0);
         loadDetailsPage();
         loadInfoPage();
     });
@@ -256,11 +257,15 @@ function setDetailPagePoi(poi)
 }
 
 /* Sets the content of the Listing Page         */
-function setListPagePois()
+function setListPagePois(offset)
 {
+    if (!offset) {
+      offset = 0;
+    }
     var contentTemplate = "";
-
-    $.each(pois, function(i, poi) {
+    var limit = (paginationNum > 0) ? offset + paginationNum : Object.keys(pois).length;
+    for (var i = offset; i < limit; i++) {
+        var poi = pois[i + 1];
         if (isFilterSelected(poi.category)) {
       
             var category = "";
@@ -283,7 +288,7 @@ function setListPagePois()
                 "</a>" +
                 "</li>";
         }
-    });
+    }
     return contentTemplate;
 }
 
@@ -382,15 +387,41 @@ function overrideBubbleCloseClick() {
 }
 
 /* Load list page using pois variable */
-function loadListPageData() {
-    $('#list > ul').html(setListPagePois());
+function loadListPageData(offset) {
+    if (!offset) {
+        offset = 0;
+    }
+    $('#list > ul').html(setListPagePois(offset));
+    
 }
 
 /* Refreshes the list of POIS in the List Page */
-function refreshListPageView() {
+function refreshListPageView(offset) {
     if ($("#list > ul").hasClass("ui-listview")) {
         $("#list > ul").listview('refresh');
     }
+
+    var pages = 1;
+    var page = 1;
+    
+    if (paginationNum > 0) {
+        //var offsetRe = /.*offset=(\d+).*/g.exec(window.location);
+        var totalNum = Object.keys(pois).length;
+        pages = Math.floor(totalNum/paginationNum);
+        page = Math.floor(offset/paginationNum);
+
+        $("#list-pagination-previous").unbind().click(function() {
+            var prev = (page-1)*paginationNum;
+            loadListPageData(prev);
+            refreshListPageView(prev);
+        });
+        $("#list-pagination-next").unbind().click(function() {
+            var next = (page+1)*paginationNum;
+            loadListPageData(next);
+            refreshListPageView(next);
+        });
+    }
+    $('#list-pagination-text').html('page ' + (page + 1) + ' of ' + pages);
 }
 
 /* Refreshes the global map onject */
@@ -525,7 +556,7 @@ $(document).ready(function() {
             setSelectedFilters(set_filters);
             addMarkers();
             loadListPageData();
-            refreshListPageView();
+            refreshListPageView(0);
         } else {
             $('#map-filter').slideDown();
         }
@@ -544,7 +575,7 @@ $(document).ready(function() {
         
         addMarkers();
         loadListPageData();
-        refreshListPageView();
+        refreshListPageView(0);
     });
     
     /* Removes a poi from favourites list and 
@@ -559,7 +590,7 @@ $(document).ready(function() {
         
         addMarkers();
         loadListPageData();
-        refreshListPageView();
+        refreshListPageView(0);
     });
     
     /* Used to filter list page and show
