@@ -12,12 +12,8 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
         <!--------------- CSS files ------------------->    
-        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />        
-        <link rel="stylesheet" href="css/pois.min.css" />
-        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile.structure-1.2.0.min.css" /> 
         <link rel="stylesheet" href="css/my.css" />
         
-            
         <!--------------- Javascript dependencies -------------------> 
             
         <!-- Google Maps JavaScript API v3 -->    
@@ -32,8 +28,9 @@
         <script src="http://jawj.github.com/OverlappingMarkerSpiderfier/bin/oms.min.js"></script>  
         <!-- jQuery Library --> 
         <script src="js/jquery-1.8.2.min.js"></script>
-        <!-- jQuery Mobile Library -->
-        <script src="js/jquery.mobile-1.2.0.min.js"></script>  
+<!--         jQuery Mobile Library -->
+        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.2/jquery.mobile.min.css" />
+        <script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.2/jquery.mobile.min.js"></script>
         <!-- Page params Library: Used to pass query params to embedded/internal pages of jQuery Mobile -->    
         <script src="js/jqm.page.params.js"></script>
         <!-- Template specific functions and handlers -->    
@@ -44,10 +41,26 @@
     <body>
          <!-- Home Page: Contains the Map -->
         <div data-role="page" id="page1" class="page">
-            <header data-role="header" data-posistion="fixed" data-id="constantNav" data-fullscreen="true">
-                <span class="ui-title">Points of Interest - POIs</span>
-                <a href="" id="filter" data-icon="gear" data-iconpos="notext" data-theme="a" title="Settings" class="ui-btn-left">&nbsp;</a>
-                <a href="#info" data-rel="dialog" data-icon="info" data-iconpos="notext" data-theme="b" title="Info" class="ui-btn-right">&nbsp;</a>
+            
+            
+<div data-role="popup" id="popupMenu" data-theme="a">
+        <ul data-role="listview" data-inset="true" style="min-width:210px;">
+            <li data-role="list-divider">How do you want to get there?</li>
+<!--            <li><a href="#">View details</a></li>-->
+            <li><a  onclick="initStartingPoint('DRIVING')" ><img class="ui-li-icon" src='css/images/car-black.png' />Car</a></li>
+            <li><a  onclick="initStartingPoint('WALKING')" ><img  class="ui-li-icon"  src='css/images/walk2-black.png' />Walk</a></li>
+              <li><a  onclick="initStartingPoint('TRANSIT')"><img  class="ui-li-icon"  src='css/images/bus-black.png'  />Public transportation</a></li>
+<!--            <li><a href="#">Edit</a></li>
+            <li><a href="#">Disable</a></li>
+            <li><a href="#">Delete</a></li>-->
+        </ul>
+</div>
+            
+<!--            data-position="fixed" -->
+            <header data-role="header"  data-tap-toggle="false" data-id="constantNav" data-fullscreen="true">
+                <h1>Points of Interest - POIs</h1>
+                <a href="" id="filter" data-icon="filter" data-iconpos="notext" data-theme="a" title="Settings" class="ui-btn-left">&nbsp;</a>
+                <a href="#info" data-rel="dialog" data-icon="info" data-iconpos="notext" data-theme="a" title="Info" class="ui-btn-right">&nbsp;</a>
                 <div data-role="navbar" class="navbar">
                     <ul>
                         <li><a href="#" class="pois-nearme" data-theme="a">Near me</a></li>
@@ -71,7 +84,7 @@
             <div data-role="content" id="map-container">
                 <div id="map_canvas" class="map_canvas"></div>
             </div>
-            
+
         </div>
 
         <!-- List Page: Contains a list with the results -->
@@ -96,15 +109,26 @@
             <div class="list-container">
                 <div class="list-scroll-container">
                     <div data-role="content" id="list" class="poi">
-                        <ul data-role='listview' data-filter='true' data-theme='b'>
+                        <ul data-role='listview' data-filter='true' data-theme='a'>
                         <!-- dynamically filled with data -->
                         </ul>
                     </div><!--list-->
-                    <div class="list-pagination-container">
-                        <a id="list-pagination-previous" class="ui-icon ui-icon-arrow-l ui-icon-shadow">&nbsp;</a>
-                        <span id="list-pagination-text"><!-- dynamically filled with data --></span>
-                        <a id="list-pagination-next" class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</a>
-                    </div>
+                     <div class="list-pagination-container">
+                         
+                         <div class="ui-grid-b">
+    <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:40px"><a id="list-pagination-previous" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext ui-btn-right">Previous page</a></div></div>
+    <div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:40px"><span id="list-pagination-text"><!-- dynamically filled with data --></span></div></div>
+    <div class="ui-block-c"><div class="ui-bar ui-bar-a" style="height:40px"><a id="list-pagination-next" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-r ui-btn-icon-notext ui-btn-left">Next page</a></div></div>
+</div>
+                         
+                         
+<!--<a id="list-pagination-previous" class="ui-icon ui-icon-arrow-l ui-icon-shadow">&nbsp;</a>-->
+
+<!--<button id="list-pagination-previous" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-arrow-l">arrow-l</button>-->
+
+
+<!--<a id="list-pagination-next" class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</a>-->
+</div>
                 </div><!--list-scroll-container-->
             </div><!--list-container-->
         </div><!-- /page -->
@@ -125,7 +149,10 @@
             
             <div class="list-container">
                 <div class="list-scroll-container">
-                    <div data-role="content" id="item">
+                    <div data-role="content">
+                         <a onclick='seeOnMap(); return false;'  class="ui-btn ui-shadow ui-corner-all ui-icon-location ui-btn-icon-notext">See on map</a>
+               
+                        <span id="item"></span>
                         <!-- dynamically filled with data -->
                     </div><!--item-->
                 </div><!--list-scroll-container-->
@@ -185,7 +212,7 @@
                     //Issy
                     var mapLat = <?php echo MAP_CENTER_LATITUDE; ?>;
                     var mapLon = <?php echo MAP_CENTER_LONGITUDE; ?>;
-					var mapZoom = <?php echo MAP_ZOOM; ?>;
+                    var mapZoom = <?php echo MAP_ZOOM; ?>;
                     
                     /* The url of the dataset */    
                     var datasetUrl = "<?php echo DATASET_URL; ?>";
