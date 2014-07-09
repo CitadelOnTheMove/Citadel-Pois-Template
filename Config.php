@@ -10,7 +10,9 @@
  * for example: "C:/wamp/www/" is the default root web dir in a standard wampServer setup)
  ***********************************************************
  */
-define("HTDOCS_ROOT", "/code/");  
+//define("HTDOCS_ROOT", "/code/");  
+// Following should work in all situations (with trailing slash)
+define("HTDOCS_ROOT", dirname(dirname(__FILE__)) . '/');
 
 /*********************************************************** 
  * Replace 'localhost' with your IP address, 
@@ -18,7 +20,14 @@ define("HTDOCS_ROOT", "/code/");
  * connected to the same network 
  ***********************************************************
  */
-define("SERVERNAME", "http://localhost/"); 
+//define("SERVERNAME", "http://localhost/"); 
+// Automatically set server name - should work in most cases, use above setting if not
+$relative_path = $_SERVER['SERVER_NAME'] . dirname(dirname($_SERVER['PHP_SELF'])) . '/';
+if (isset($_SERVER['HTTPS'])) {
+	define("SERVERNAME", "https://" . $relative_path);
+} else {
+	define("SERVERNAME", "http://" . $relative_path);
+}
 
 /*********************************************************** 
  * Leave all the settings below unchanged if you only want
@@ -50,4 +59,4 @@ define("DB_HOSTNAME", "127.0.0.1");
 define("DB_PORT", "3306");
 define("DB_NAME", "citadel");
 
-?>
+
