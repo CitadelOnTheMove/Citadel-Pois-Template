@@ -284,9 +284,15 @@ function setListPagePois(offset)
       offset = 0;
     }
     var contentTemplate = "";
-    var limit = (paginationNum > 0) ? offset + paginationNum : Object.keys(pois).length;
+    var keys = Object.keys(pois);
+    var limit = (paginationNum > 0) ? offset + paginationNum : keys.length;
+    
     for (var i = offset; i < limit; i++) {
-        var poi = pois[i + 1];
+        if (i >= keys.length) {
+          break;
+        }
+        console.log(keys[i]);
+        var poi = pois[keys[i]];
         if (isFilterSelected(poi.category)) {
       
             var category = "";
