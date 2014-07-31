@@ -291,7 +291,6 @@ function setListPagePois(offset)
         if (i >= keys.length) {
           break;
         }
-        console.log(keys[i]);
         var poi = pois[keys[i]];
         if (isFilterSelected(poi.category)) {
       
